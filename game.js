@@ -1,36 +1,19 @@
 const buttonColors = ['red', 'blue', 'green', 'yellow'];
 
-const saveGameState = () => {
-  localStorage.setItem('gamePattern', JSON.stringify(gamePattern));
-  localStorage.setItem('level', level);
-  localStorage.setItem('started', started);
-};
-
-const loadGameState = () => {
-  const savedGamePattern = localStorage.getItem('gamePattern');
-  const savedLevel = localStorage.getItem('level');
-  const savedStarted = localStorage.getItem('started');
-
-  if (savedGamePattern && savedLevel && savedStarted) {
-    gamePattern = JSON.parse(savedGamePattern);
-    level = parseInt(savedLevel);
-    started = JSON.parse(savedStarted);
-  }
-};
-
 let gamePattern = [];
 let userClickedPattern = [];
 
 let started = false;
 let level = 0;
 
-loadGameState();
-
-$('h1').after(
-  '<h2>Remeber the pattern provided and press them in order after each blink</h2>'
-);
-
-$('.start-btn').on('click', function () {
+// $(document).keypress(function () {
+//   if (!started) {
+//     $('#level-title').text('Level ' + level);
+//     nextSequence();
+//     started = true;
+//   }
+// });
+$('h1').on('click', function () {
   if (!started) {
     $('#level-title').text('Level ' + level);
     nextSequence();
@@ -38,7 +21,7 @@ $('.start-btn').on('click', function () {
   }
 });
 
-$('.btn').on('click', function () {
+$('.btn').click(function () {
   let userChosenColor = this.id;
   userClickedPattern.push(userChosenColor);
 
@@ -48,32 +31,23 @@ $('.btn').on('click', function () {
   checkAnswer(userClickedPattern.length - 1);
 });
 
-let isCheckingAnswer = false;
-
 const checkAnswer = (currentLevel) => {
-  if (!isCheckingAnswer) {
-    isCheckingAnswer = true;
-
-    if (gamePattern[currentLevel] === userClickedPattern[currentLevel]) {
-      if (userClickedPattern.length === gamePattern.length) {
-        setTimeout(function () {
-          nextSequence();
-        }, 1000);
-      }
-    } else {
-      playsound('wrong');
-      $('body').addClass('game-over');
-      $('#level-title').text('Game Over, Press Any Key to Restart');
-
+  if (gamePattern[currentLevel] === userClickedPattern[currentLevel]) {
+    if (userClickedPattern.length === gamePattern.length) {
       setTimeout(function () {
-        $('body').removeClass('game-over');
-      }, 500);
-
-      setTimeout(function () {
-        startOver();
-        isCheckingAnswer = false;
-      }, 2000); // Adjust the delay here
+        nextSequence();
+      }, 1000);
     }
+  } else {
+    playsound('wrong');
+    $('body').addClass('game-over');
+    $('#level-title').text('Game Over, Press Any Key to Restart');
+
+    setTimeout(function () {
+      $('body').removeClass('game-over');
+    }, 500);
+
+    startOver();
   }
 };
 
@@ -91,7 +65,6 @@ const nextSequence = () => {
     .fadeIn(100);
 
   playsound(randomChosenColor);
-  saveGameState();
 };
 
 const playsound = (name) => {
@@ -111,5 +84,4 @@ const startOver = () => {
   level = 0;
   gamePattern = [];
   started = false;
-  saveGameState();
 };
