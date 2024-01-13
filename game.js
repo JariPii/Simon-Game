@@ -18,7 +18,7 @@ $('h1').after(
 //   }
 // });
 
-$(document).on('keypress touchstart', function () {
+$('.start-btn').on('click touchstart', function () {
   if (!started) {
     $('#level-title').text('Level ' + level);
     nextSequence();
