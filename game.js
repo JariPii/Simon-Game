@@ -24,6 +24,8 @@ let userClickedPattern = [];
 let started = false;
 let level = 0;
 
+loadGameState();
+
 $('h1').after(
   '<h2>Remeber the pattern provided and press them in order after each blink</h2>'
 );
@@ -46,25 +48,32 @@ $('.btn').on('click touchstart', function () {
   checkAnswer(userClickedPattern.length - 1);
 });
 
+let isCheckingAnswer = false;
+
 const checkAnswer = (currentLevel) => {
-  if (gamePattern[currentLevel] === userClickedPattern[currentLevel]) {
-    if (userClickedPattern.length === gamePattern.length) {
+  if (!isCheckingAnswer) {
+    isCheckingAnswer = true;
+
+    if (gamePattern[currentLevel] === userClickedPattern[currentLevel]) {
+      if (userClickedPattern.length === gamePattern.length) {
+        setTimeout(function () {
+          nextSequence();
+        }, 1000);
+      }
+    } else {
+      playsound('wrong');
+      $('body').addClass('game-over');
+      $('#level-title').text('Game Over, Press Any Key to Restart');
+
       setTimeout(function () {
-        nextSequence();
-      }, 1000);
+        $('body').removeClass('game-over');
+      }, 500);
+
+      setTimeout(function () {
+        startOver();
+        isCheckingAnswer = false;
+      }, 2000); // Adjust the delay here
     }
-  } else {
-    playsound('wrong');
-    $('body').addClass('game-over');
-    $('#level-title').text('Game Over, Press Any Key to Restart');
-
-    setTimeout(function () {
-      $('body').removeClass('game-over');
-    }, 500);
-
-    setTimeout(function () {
-      startOver();
-    }, 1000);
   }
 };
 
@@ -104,5 +113,3 @@ const startOver = () => {
   started = false;
   saveGameState();
 };
-
-loadGameState();
