@@ -30,7 +30,7 @@ $('h1').after(
   '<h2>Remeber the pattern provided and press them in order after each blink</h2>'
 );
 
-$('.start-btn').on('click touchstart', function () {
+$('.start-btn').on('click', function () {
   if (!started) {
     $('#level-title').text('Level ' + level);
     nextSequence();
@@ -38,7 +38,7 @@ $('.start-btn').on('click touchstart', function () {
   }
 });
 
-$('.btn').on('click touchstart', function () {
+$('.btn').on('click', function () {
   let userChosenColor = this.id;
   userClickedPattern.push(userChosenColor);
 
