@@ -1,5 +1,23 @@
 const buttonColors = ['red', 'blue', 'green', 'yellow'];
 
+const saveGameState = () => {
+  localStorage.setItem('gamePattern', JSON.stringify(gamePattern));
+  localStorage.setItem('level', level);
+  localStorage.setItem('started', started);
+};
+
+const loadGameState = () => {
+  const savedGamePattern = localStorage.getItem('gamePattern');
+  const savedLevel = localStorage.getItem('level');
+  const savedStarted = localStorage.getItem('started');
+
+  if (savedGamePattern && savedLevel && savedStarted) {
+    gamePattern = JSON.parse(savedGamePattern);
+    level = parseInt(savedLevel);
+    started = JSON.parse(savedStarted);
+  }
+};
+
 let gamePattern = [];
 let userClickedPattern = [];
 
@@ -10,14 +28,6 @@ $('h1').after(
   '<h2>Remeber the pattern provided and press them in order after each blink</h2>'
 );
 
-// $(document).keypress(function () {
-//   if (!started) {
-//     $('#level-title').text('Level ' + level);
-//     nextSequence();
-//     started = true;
-//   }
-// });
-
 $('.start-btn').on('click touchstart', function () {
   if (!started) {
     $('#level-title').text('Level ' + level);
@@ -25,16 +35,6 @@ $('.start-btn').on('click touchstart', function () {
     started = true;
   }
 });
-
-// $('.btn').click(function () {
-//   let userChosenColor = this.id;
-//   userClickedPattern.push(userChosenColor);
-
-//   playsound(userChosenColor);
-//   animatePress(userChosenColor);
-
-//   checkAnswer(userClickedPattern.length - 1);
-// });
 
 $('.btn').on('click touchstart', function () {
   let userChosenColor = this.id;
@@ -80,6 +80,7 @@ const nextSequence = () => {
     .fadeIn(100);
 
   playsound(randomChosenColor);
+  saveGameState();
 };
 
 const playsound = (name) => {
@@ -99,4 +100,7 @@ const startOver = () => {
   level = 0;
   gamePattern = [];
   started = false;
+  saveGameState();
 };
+
+loadGameState();
