@@ -10,7 +10,15 @@ $('h1').after(
   '<h2>Remeber the pattern provided and press them in order after each blink</h2>'
 );
 
-$(document).keypress(function () {
+// $(document).keypress(function () {
+//   if (!started) {
+//     $('#level-title').text('Level ' + level);
+//     nextSequence();
+//     started = true;
+//   }
+// });
+
+$(document).on('keypress touchstart', function () {
   if (!started) {
     $('#level-title').text('Level ' + level);
     nextSequence();
@@ -18,7 +26,17 @@ $(document).keypress(function () {
   }
 });
 
-$('.btn').click(function () {
+// $('.btn').click(function () {
+//   let userChosenColor = this.id;
+//   userClickedPattern.push(userChosenColor);
+
+//   playsound(userChosenColor);
+//   animatePress(userChosenColor);
+
+//   checkAnswer(userClickedPattern.length - 1);
+// });
+
+$('.btn').on('click touchstart', function () {
   let userChosenColor = this.id;
   userClickedPattern.push(userChosenColor);
 
