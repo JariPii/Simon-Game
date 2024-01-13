@@ -62,7 +62,9 @@ const checkAnswer = (currentLevel) => {
       $('body').removeClass('game-over');
     }, 500);
 
-    startOver();
+    setTimeout(function () {
+      startOver();
+    }, 1000);
   }
 };
 
