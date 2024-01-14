@@ -69,5 +69,7 @@ button {
 
 .pressed {
   box-shadow: 0 0 20px white;
-  background-color: grey;
+  /* background-color: grey; */
+  transform: scale(0.9);
+  transition: transform 0.2s ease;
 }
